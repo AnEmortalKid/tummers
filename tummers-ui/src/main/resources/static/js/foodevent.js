@@ -16,5 +16,15 @@ angular.module('foodevent', []).controller(
 									$scope.breakfast = data;
 									return data;
 								});
+
+						var credentials = {
+							username : 'guest',
+							password : 'guest'
+						}
+						
+						var details = $http.post('/accounts/details',
+								credentials).success(function(data) {
+							console.log("details=" + data.accessLevel);
+						});
 					})
 		});
