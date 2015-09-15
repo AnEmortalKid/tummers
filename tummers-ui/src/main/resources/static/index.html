@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-<title>Hello AngularJS</title>
+<title>Food Friday</title>
 <link href="css/angular-bootstrap.css" rel="stylesheet">
 <style type="text/css">
 [ng\:cloak], [ng-cloak], .ng-cloak {
@@ -20,6 +20,7 @@ body {
 	margin: 0 auto;
 }
 </style>
+<link rel='stylesheet' href='tummers/tummers.css' />
 <link rel='stylesheet' href='fullcalendar/fullcalendar.css' />
 <script src='lib/jquery.min.js'></script>
 <script src='lib/moment.min.js'></script>
@@ -73,18 +74,17 @@ body {
 </head>
 
 <body ng-app="foodevent">
-	<div class="container">
-		<h1>Greeting</h1>
-		<!-- <div ng-controller="home" ng-cloak class="ng-cloak">
-			<p>The ID is {{greeting.id}}</p>
-			<p>The content is {{greeting.content}}</p>
-		</div> -->
-		<div>
-			<div ng-controller="upcoming" ng-cloak class="ng-cloak">
-				<p>Upcoming event date is {{upcoming}}</p>
-				<p>Breakfast associates are {{breakfast}}</p>
-			</div>
+	<div class="container food-event-title">
+		<h1>Food Friday</h1>
+	</div>
+	<div>
+		<div ng-controller="upcoming" ng-cloak
+			class="ng-cloak food-event-detail">
+			<h1>Date: {{eventDate}}</h1>
+			<p>Breakfast associates are {{breakfastAssociates}}</p>
+			<p>Snack associates are {{snackAssociates}}</p>
 		</div>
+	</div>
 	</div>
 	<div id='calendar'></div>
 </body>

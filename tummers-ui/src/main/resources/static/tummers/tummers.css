@@ -1,0 +1,19 @@
+.food-event-details {
+	text-align: center;
+	color: red;
+}
+
+.food-event-title {
+	text-align: center;
+	background: #E41313;
+	color: white;
+}
+
+.food-event-detail h1 {
+	background: #E41313;
+	color: white;
+}
+
+.food-event-detail p {
+	color: gray;
+}
