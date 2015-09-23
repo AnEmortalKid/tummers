@@ -29,7 +29,7 @@ public class AssociatesController {
 	private String yummers_rest_url;
 
 	@RequestMapping("/{ids}")
-	public List<String> associateIds(@PathVariable("ids") List<String> ids) {
+	public List<AssociateData> associateIds(@PathVariable("ids") List<String> ids) {
 		String plainCreds = guestUser + ":" + guestPassword;
 		byte[] plainCredsBytes = plainCreds.getBytes();
 		byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
@@ -38,18 +38,19 @@ public class AssociatesController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Basic " + base64Creds);
 
-		List<String> names = new ArrayList<>();
+		List<AssociateData> data = new ArrayList<>();
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<String> request = new HttpEntity<String>(headers);
 		for (String id : ids) {
 			ResponseEntity<AssociateData> response = restTemplate.exchange(yummers_rest_url + "associates/" + id,
 					HttpMethod.GET, request, AssociateData.class);
-			String firstName = response.getBody().getFirstName();
-			names.add(firstName);
+			AssociateData associateData = response.getBody();
+			associateData.setAssociateId(id);
+			data.add(associateData);
 		}
 
-		return names;
+		return data;
 	}
 
 }
