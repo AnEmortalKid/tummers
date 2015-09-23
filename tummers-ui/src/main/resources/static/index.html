@@ -1,91 +1,29 @@
 <!doctype html>
 <html>
 <head>
-<title>Hello AngularJS</title>
+<title>Tummers</title>
 <link href="css/angular-bootstrap.css" rel="stylesheet">
 <style type="text/css">
 [ng\:cloak], [ng-cloak], .ng-cloak {
 	display: none !important;
 }
-
-body {
-	margin: 40px 10px;
-	padding: 0;
-	font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
-	font-size: 14px;
-}
-
-#calendar {
-	max-width: 900px;
-	margin: 0 auto;
-}
 </style>
-<link rel='stylesheet' href='fullcalendar/fullcalendar.css' />
-<script src='lib/jquery.min.js'></script>
-<script src='lib/moment.min.js'></script>
-<script src="js/angular-bootstrap.js" type="text/javascript"></script>
-<script src="js/hello.js"></script>
-<script src="js/foodevent.js"></script>
-<script src='fullcalendar/fullcalendar.js'></script>
-<script>
-	$(document).ready(function() {
-		console.log("Ready Func!")
-		var today = new Date();
-		var dd = today.getDate();
-		var mm = today.getMonth() + 1; //January is 0!
-		var yyyy = today.getFullYear();
-
-		if (dd < 10) {
-			dd = '0' + dd
-		}
-
-		if (mm < 10) {
-			mm = '0' + mm
-		}
-
-		today = mm + '/' + dd + '/' + yyyy;
-		$('#calendar').fullCalendar({
-			header : {
-				left : 'prev,next today',
-				center : 'title',
-				right : 'month,basicWeek,basicDay'
-			},
-			defaultDate : today,
-			editable : true,
-			eventLimit : true, // allow "more" link when too many events
-			eventSources : [
-
-			// event source
-			{
-				url : '/foodEvents/calendarEvents',
-				type : 'GET',
-				error : function() {
-					alert('there was an error while fetching events!');
-				}
-			}
-
-			],
-			eventStartEditable : false
-		});
-
-	});
-</script>
 </head>
 
-<body ng-app="foodevent">
-	<div class="container">
-		<h1>Greeting</h1>
-		<!-- <div ng-controller="home" ng-cloak class="ng-cloak">
-			<p>The ID is {{greeting.id}}</p>
-			<p>The content is {{greeting.content}}</p>
-		</div> -->
-		<div>
-			<div ng-controller="upcoming" ng-cloak class="ng-cloak">
-				<p>Upcoming event date is {{upcoming}}</p>
-				<p>Breakfast associates are {{breakfast}}</p>
-			</div>
-		</div>
+<body ng-app="tummers" ng-cloak class="ng-cloak">
+	<div ng-controller="navigation" class="container">
+		<ul class="nav nav-pills" role="tablist">
+			<!-- change to upcoming soon -->
+			<li ng-class="{active:tab('home')}"><a href="#/">home</a></li>
+			<li><a href="#/upcoming">upcoming</a></li>
+			<li><a href="#/login">login</a></li>
+			<li ng-show="authenticated"><a href="" ng-click="logout()">logout</a></li>
+		</ul>
 	</div>
-	<div id='calendar'></div>
+	<div ng-view class="container"></div>
+	<script src="js/angular-bootstrap.js" type="text/javascript"></script>
+	<script src="js/foodevent.js"></script>
+	<script src="js/tummers.js"></script>
+	<script src="js/authenticate.js"></script>
 </body>
 </html>
