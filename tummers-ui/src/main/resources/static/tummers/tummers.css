@@ -1,6 +1,5 @@
 .food-event-details {
 	text-align: center;
-	color: red;
 }
 
 .food-event-title {
@@ -12,8 +11,39 @@
 .food-event-detail h1 {
 	background: #E41313;
 	color: white;
+	width: 80%;
+	margin: auto;
+	margin-top: 10px;
+	text-align: center;
+}
+
+.food-event-detail h2 {
+	background: #034809;
+	color: white;
+	width: 80%;
+	margin: auto;
+	margin-top: 1%;
+	margin-bottom: 1%;
+	text-align: center;
+}
+
+.food-event-detail ul {
+	width: 80%;
+	margin: auto;
+	color: gray;
 }
 
 .food-event-detail p {
 	color: gray;
+}
+
+.fc-content {
+	background-color: #E41313;
+}
+
+.food-event-calendar {
+	width: 80%;
+	margin: auto;
+	margin-top: 25px;
+	margin-bottom: 25px;
 }

@@ -74,17 +74,27 @@ body {
 
 <body ng-app="foodevent">
 	<div class="container food-event-title">
-		<h1>Food Friday</h1>
+		<h1>Upcoming Events</h1>
 	</div>
 	<div>
 		<div ng-controller="upcoming" ng-cloak
 			class="ng-cloak food-event-detail">
-			<h1>Date: {{eventDate}}</h1>
-			<p>Breakfast associates are {{breakfastAssociates}}</p>
-			<p>Snack associates are {{snackAssociates}}</p>
+			<h1>Closest Event on {{eventDate}}</h1>
+			<h2>Breafkast Associates</h2>
+			<ul>
+				<li ng-repeat="ba in breakfastAssociates">{{ba.firstName}}
+					{{ba.lastName}}</li>
+			</ul>
+
+			<h2>Snack Associates</h2>
+			<ul>
+				<li ng-repeat="sa in snackAssociates">{{sa.firstName}}
+					{{sa.lastName}}</li>
+			</ul>
 		</div>
 	</div>
+	<div class="food-event-calendar">
+		<div id='calendar'></div>
 	</div>
-	<div id='calendar'></div>
 </body>
 </html>
