@@ -1,7 +1,11 @@
 angular.module('foodevent', []).controller(
 		'upcoming',
-		function($scope, $http, $q) {
-			
+		function($scope, $http, $q, $route) {
+
+			$scope.tab = function(route) {
+				return $route.current && route === $route.current.controller;
+			};
+
 			$http.get('/foodEvents/upcoming/').success(
 					function(data) {
 						console.log(data);
