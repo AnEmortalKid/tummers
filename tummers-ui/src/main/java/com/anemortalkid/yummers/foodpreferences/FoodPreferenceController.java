@@ -1,6 +1,8 @@
 package com.anemortalkid.yummers.foodpreferences;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.core.ParameterizedTypeReference;
@@ -29,18 +31,35 @@ public class FoodPreferenceController extends AbstractRESTController {
 		ParameterizedTypeReference<List<FoodPreferenceData>> myData = new ParameterizedTypeReference<List<FoodPreferenceData>>() {
 		};
 
-		ResponseEntity<List> listish = restTemplate.exchange(yummers_rest_url + "foodPreferences/list", HttpMethod.GET,
-				request, List.class);
 		ResponseEntity<List<FoodPreferenceData>> responseEntity = restTemplate
 				.exchange(yummers_rest_url + "foodPreferences/list", HttpMethod.GET, request, myData);
 		List<FoodPreferenceData> foodPreferenceData = responseEntity.getBody();
-		return foodPreferenceData.stream().map(fpd -> {
+
+		ResponseEntity<List<FoodPreferenceData>> missing = restTemplate
+				.exchange(yummers_rest_url + "foodPreferences/missing", HttpMethod.GET, getRequestEntity(), myData);
+
+		FPDtoFPTD function = new FPDtoFPTD();
+		List<FoodPreferenceTableData> participantsWithPreference = foodPreferenceData.stream().map(function::apply)
+				.collect(Collectors.toList());
+
+		List<FoodPreferenceTableData> participantsWithoutPreference = missing.getBody().stream().map(function::apply)
+				.collect(Collectors.toList());
+
+		List<FoodPreferenceTableData> allData = new ArrayList<FoodPreferenceTableData>(participantsWithPreference);
+		allData.addAll(participantsWithoutPreference);
+		return allData;
+	}
+
+	// TODO change to FunctInterface
+	class FPDtoFPTD implements Function<FoodPreferenceData, FoodPreferenceTableData> {
+		@Override
+		public FoodPreferenceTableData apply(FoodPreferenceData fpd) {
 			FoodPreferenceTableData fptd = new FoodPreferenceTableData();
 			fptd.setFirstName(fpd.getAssociate().getFirstName());
 			fptd.setLastName(fpd.getAssociate().getLastName());
 			fptd.setPreference(fpd.getPreferenceType());
 			return fptd;
-		}).collect(Collectors.toList());
+		}
 	}
 
 }
