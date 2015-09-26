@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+<title>Participants</title>
+<link href="css/angular-bootstrap.css" rel="stylesheet">
+<style type="text/css">
+[ng\:cloak], [ng-cloak], .ng-cloak {
+	display: none !important;
+}
+</style>
+<script src="js/participants.js"></script>
+</head>
+
+<body ng-app="participants" ng-cloak class="ng-cloak">
+	<div ng-controller="participant-table" class="container">
+		<table style="width: 80%">
+			<tr>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Preference</th>
+			</tr>
+			<tr ng-repeat="fp in foodPreferences">
+				<td>{{fp.firstName}}</td>
+				<td>{{fp.lastName}}</td>
+				<td>{{fp.preference}}</td>
+			</tr>
+		</table>
+		<script src="js/participants.js"></script>
+	</div>
+	<div ng-controller="register" class="container" ng-show="authenticated">
+	<h2>HIHI</h2></div>
+</body>
+</html>

@@ -52,5 +52,4 @@ public class AssociatesController {
 
 		return data;
 	}
-
 }

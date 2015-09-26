@@ -14,13 +14,15 @@
 	<div ng-controller="navigation" class="container">
 		<ul class="nav nav-pills" role="tablist">
 			<li ng-class="{active:tab('home')}"><a href="#/">home</a></li>
-			<li ng-class="{active:tab('upcoming')}"><a href="#/upcoming">upcoming</a></li>
-			<li><a href="#/login">login</a></li>
-			<li ng-show="authenticated"><a href="" ng-click="logout()">logout</a></li>
+			<li><a href="#/upcoming">upcoming</a></li>
+			<li><a href="#/participants">participants</a></li>
+			<li ng-hide="authenticated"><a href="#/login">Admin Login</a></li>
+			<li ng-show="authenticated"><a href="" ng-click="logout()">Logout</a></li>
 		</ul>
 	</div>
 	<div ng-view class="container"></div>
 	<script src="js/angular-bootstrap.js" type="text/javascript"></script>
+	<script src="js/participants.js"></script>
 	<script src="js/foodevent.js"></script>
 	<script src="js/hello.js"></script>
 </body>

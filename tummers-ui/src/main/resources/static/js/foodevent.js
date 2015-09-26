@@ -18,33 +18,20 @@ angular.module('foodevent', []).controller(
 						console.log("bIds" + breakfastIds);
 						console.log("sIds" + snackIds);
 
-						var names = $http.get('/associates/' + breakfastIds)
-								.success(function(data) {
+						$http.get('/associates/' + breakfastIds).success(
+								function(data) {
 									console.log("breakfast=" + data);
 									$scope.breakfastAssociates = data;
 									return data;
 								});
 
-						var snackNames = $http.get('/associates/' + snackIds)
-								.success(function(data) {
+						$http.get('/associates/' + snackIds).success(
+								function(data) {
 									console.log("snacks=" + data)
 									$scope.snackAssociates = data;
 									return data;
-								})
-
-						var credentials = {
-							username : 'guest',
-							password : 'guest'
-						}
-
-						var details = $http.post('/accounts/details',
-								credentials).success(function(data) {
-							console.log("details=" + data.accessLevel);
-						});
-
-						var extracted = extractNames($http, breakfastIds, $q);
-						console.log("extracted=" + extracted);
-					})
+								});
+					});
 		});
 
 function slotToDateStr(slot) {

@@ -1,22 +1,27 @@
 angular
-		.module('hello', [ 'foodevent', 'ngRoute' ])
-		.config(
-				function($routeProvider, $httpProvider) {
+		.module('hello', [ 'participants', 'foodevent', 'ngRoute' ])
+		.config(function($routeProvider, $httpProvider) {
 
-					$routeProvider.when('/', {
-						templateUrl : 'home.html',
-						controller : 'home'
-					}).when('/login', {
-						templateUrl : 'login.html',
-						controller : 'navigation'
+			$routeProvider.when('/', {
+				templateUrl : 'home.html',
+				controller : 'home'
+			}).when('/login', {
+				templateUrl : 'login.html',
+				controller : 'navigation'
 
-					}).when('/upcoming', {
-						templateUrl : 'upcoming.html',
-					}).otherwise('/');
+			}).when('/upcoming', {
+				templateUrl : 'upcoming.html',
+			}).when('/admin-home', {
+				templateUrl : 'admin-home.html',
+				controller : 'admin-home'
+			}).when('/participants', {
+				templateUrl : 'participants.html',
+			}).otherwise('/');
 
-					$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+			$httpProvider.defaults.headers.common['Y-TOKEN'] = 'NoToken';
 
-				}).controller(
+		})
+		.controller(
 				'navigation',
 
 				function($rootScope, $scope, $http, $location, $route) {
@@ -27,26 +32,41 @@ angular
 					};
 
 					var authenticate = function(credentials, callback) {
+						$http
+								.post('/accounts/login', credentials)
+								.success(
+										function(data, headers, status, config) {
+											console.log('data=' + data);
+											console.log('status=' + status);
+											console.log('config=' + config);
+											console.log('got tokenized!');
+											console.log('token='
+													+ headers['Y-TOKEN']);
+											console.log('token2=' + headers);
+											console
+													.log('providerHeader='
+															+ $http.defaults.headers.common['Y-TOKEN']);
 
-						var headers = credentials ? {
-							authorization : "Basic "
-									+ btoa(credentials.username + ":"
-											+ credentials.password)
-						} : {};
+										});
 
-						$http.get('user', {
-							headers : headers
-						}).success(function(data) {
-							if (data.name) {
-								$rootScope.authenticated = true;
-							} else {
-								$rootScope.authenticated = false;
-							}
-							callback && callback($rootScope.authenticated);
-						}).error(function() {
-							$rootScope.authenticated = false;
-							callback && callback(false);
-						});
+						$http
+								.post('/accounts/details', credentials)
+								.success(
+										function(data) {
+											console.log('AccessLevel:'
+													+ data.accessLevel);
+											if (data.accessLevel === 'ROLE_ADMIN'
+													|| data.accessLevel === 'ROLE_SUPER') {
+												$rootScope.authenticated = true;
+											} else {
+												$rootScope.authenticated = false;
+											}
+											callback
+													&& callback($rootScope.authenticated);
+										}).error(function() {
+									$rootScope.authenticated = false;
+									callback && callback(false);
+								});
 
 					}
 
@@ -58,7 +78,7 @@ angular
 								function(authenticated) {
 									if (authenticated) {
 										console.log("Login succeeded")
-										$location.path("/");
+										$location.path("/admin-home");
 										$scope.error = false;
 										$rootScope.authenticated = true;
 									} else {
@@ -71,17 +91,35 @@ angular
 					};
 
 					$scope.logout = function() {
+
+						$http.post('/accounts/logout', {}).success(function() {
+							console.log('called logout');
+						}).error(function() {
+							console.log('failed');
+						});
+
 						$http.post('logout', {}).success(function() {
 							$rootScope.authenticated = false;
 							$location.path("/");
 						}).error(function(data) {
-							console.log("Logout failed")
+							console.log("Logout failed");
 							$rootScope.authenticated = false;
 						});
 					}
 
 				}).controller('home', function($scope, $http) {
-			$http.get('/resource/').success(function(data) {
-				$scope.greeting = data;
-			})
+
+		}).controller('admin-home', function($scope, $http) {
+
+			$http.get('/foodEvents/upcoming/').success(function(data) {
+				console.log("in foodevents");
+			});
+
+			$http.get('/accounts/user/').success(function(data) {
+				console.log('got dat user');
+				console.log('username=' + data.username);
+				$scope.username = data.username;
+			});
+
+			console.log('admin-home-new');
 		});
